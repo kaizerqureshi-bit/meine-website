@@ -1,10 +1,206 @@
 <!DOCTYPE html>
-<html>
+<html lang="de">
 <head>
-    <title>Meine Website</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechZone</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: Arial, sans-serif;
+            background: #0b1020;
+            color: #f5f7ff;
+            line-height: 1.6;
+        }
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            background: rgba(11,16,32,.95);
+            border-bottom: 1px solid #27304a;
+            padding: 15px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo { font-size: 1.4rem; font-weight: bold; }
+        nav a {
+            color: #cbd5e1;
+            text-decoration: none;
+            margin-left: 18px;
+        }
+        nav a:hover { color: white; }
+        header {
+            min-height: 75vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 60px 20px;
+            background: linear-gradient(135deg, #111936, #0b1020);
+        }
+        header h1 { font-size: clamp(3rem, 9vw, 6rem); margin-bottom: 15px; }
+        header p { color: #b8c2d9; max-width: 650px; font-size: 1.15rem; }
+        .buttons { margin-top: 28px; }
+        .btn {
+            display: inline-block;
+            padding: 12px 20px;
+            margin: 6px;
+            border-radius: 10px;
+            background: #fff;
+            color: #0b1020;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        section { padding: 70px 7%; max-width: 1200px; margin: auto; }
+        section h2 { font-size: 2.2rem; margin-bottom: 12px; }
+        .intro { color: #aeb8ce; margin-bottom: 30px; }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 18px;
+        }
+        .card {
+            background: #131b31;
+            border: 1px solid #293451;
+            border-radius: 16px;
+            padding: 24px;
+            transition: transform .2s, border-color .2s;
+        }
+        .card:hover { transform: translateY(-4px); border-color: #65749b; }
+        .card h3 { margin-bottom: 8px; }
+        .card p { color: #aeb8ce; }
+        .tag {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 5px 9px;
+            border-radius: 8px;
+            background: #202a45;
+            color: #dbe4ff;
+            font-size: .85rem;
+        }
+        .project {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            align-items: center;
+        }
+        .project + .project { margin-top: 15px; }
+        footer {
+            text-align: center;
+            padding: 35px 20px;
+            border-top: 1px solid #27304a;
+            color: #8f9ab2;
+        }
+        @media (max-width: 700px) {
+            nav { flex-direction: column; gap: 10px; }
+            nav a { margin: 0 7px; font-size: .9rem; }
+            .project { flex-direction: column; align-items: flex-start; }
+        }
+    </style>
 </head>
 <body>
-    <h1>Hallo Welt!</h1>
-    <p>Das ist meine erste Website.</p>
+
+<nav>
+    <div class="logo">⚡ TechZone</div>
+    <div>
+        <a href="#ueber">Über mich</a>
+        <a href="#programmierung">Programmierung</a>
+        <a href="#ki">KI</a>
+        <a href="#hardware">Hardware</a>
+        <a href="#weltraum">Weltraum</a>
+        <a href="#projekte">Projekte</a>
+    </div>
+</nav>
+
+<header>
+    <h1>TechZone</h1>
+    <p>Eine Website über Programmierung, künstliche Intelligenz, Computer, Games und den Weltraum.</p>
+    <div class="buttons">
+        <a class="btn" href="#projekte">Projekte ansehen</a>
+        <a class="btn" href="#programmierung">Entdecken</a>
+    </div>
+</header>
+
+<section id="ueber">
+    <h2>👋 Über mich</h2>
+    <p class="intro">Ich interessiere mich besonders für Technik, Programmierung und künstliche Intelligenz. Auf dieser Website sammle ich Themen, Projekte und Dinge, die ich beim Programmieren lerne.</p>
+    <div class="grid">
+        <div class="card"><h3>💻 Programmierung</h3><p>Ich beschäftige mich mit HTML, CSS und Python und möchte Schritt für Schritt mehr lernen.</p></div>
+        <div class="card"><h3>🤖 KI</h3><p>Künstliche Intelligenz und die Frage, wie moderne Computersysteme lernen, finde ich besonders interessant.</p></div>
+        <div class="card"><h3>🚀 Zukunft</h3><p>Mein Ziel ist es, eigene digitale Projekte zu entwickeln und meine technischen Fähigkeiten weiter auszubauen.</p></div>
+    </div>
+</section>
+
+<section id="programmierung">
+    <h2>💻 Programmierung</h2>
+    <p class="intro">Von den Grundlagen bis zu eigenen Programmen.</p>
+    <div class="grid">
+        <div class="card"><h3>HTML</h3><p>Die Struktur von Websites.</p><span class="tag">Web</span></div>
+        <div class="card"><h3>CSS</h3><p>Design, Layouts und Animationen.</p><span class="tag">Web</span></div>
+        <div class="card"><h3>JavaScript</h3><p>Interaktive Funktionen im Browser.</p><span class="tag">Web</span></div>
+        <div class="card"><h3>Python</h3><p>Eine vielseitige Programmiersprache für viele Projekte.</p><span class="tag">Code</span></div>
+    </div>
+</section>
+
+<section id="ki">
+    <h2>🤖 Künstliche Intelligenz</h2>
+    <p class="intro">Grundlagen und Anwendungen moderner KI.</p>
+    <div class="grid">
+        <div class="card"><h3>Was ist KI?</h3><p>Wie Computersysteme Aufgaben bearbeiten, die normalerweise menschliche Fähigkeiten erfordern.</p></div>
+        <div class="card"><h3>Machine Learning</h3><p>Computer lernen Muster aus Daten, statt jede Regel einzeln vorgegeben zu bekommen.</p></div>
+        <div class="card"><h3>Neuronale Netze</h3><p>Modelle, die sich an der Funktionsweise biologischer Nervensysteme orientieren.</p></div>
+    </div>
+</section>
+
+<section id="hardware">
+    <h2>🖥️ Computer & Hardware</h2>
+    <p class="intro">Die wichtigsten Bauteile eines Computers.</p>
+    <div class="grid">
+        <div class="card"><h3>CPU</h3><p>Verarbeitet Befehle und führt Berechnungen aus.</p></div>
+        <div class="card"><h3>GPU</h3><p>Übernimmt besonders viele Grafik- und Parallelberechnungen.</p></div>
+        <div class="card"><h3>RAM</h3><p>Speichert Daten kurzfristig, während Programme laufen.</p></div>
+        <div class="card"><h3>SSD</h3><p>Speichert Dateien und Programme dauerhaft.</p></div>
+        <div class="card"><h3>Mainboard</h3><p>Verbindet die wichtigsten Komponenten miteinander.</p></div>
+    </div>
+</section>
+
+<section id="weltraum">
+    <h2>🌌 Weltraum</h2>
+    <p class="intro">Spannende Themen aus Astronomie und Raumfahrt.</p>
+    <div class="grid">
+        <div class="card"><h3>🪐 Planeten</h3><p>Unsere Planeten und ihre Eigenschaften.</p></div>
+        <div class="card"><h3>⭐ Sterne</h3><p>Wie Sterne entstehen, leben und sich verändern.</p></div>
+        <div class="card"><h3>🕳️ Schwarze Löcher</h3><p>Extrem kompakte Objekte mit sehr starker Gravitation.</p></div>
+        <div class="card"><h3>🌠 Galaxien</h3><p>Riesige Systeme aus Sternen, Gas, Staub und Dunkler Materie.</p></div>
+    </div>
+</section>
+
+<section id="projekte">
+    <h2>🧪 Projekte</h2>
+    <p class="intro">Hier können später eigene Experimente und Programme ergänzt werden.</p>
+
+    <div class="card project">
+        <div><h3>🌐 Website-Projekt</h3><p>Diese Website wurde mit HTML und CSS erstellt.</p></div>
+        <span class="tag">HTML + CSS</span>
+    </div>
+
+    <div class="card project">
+        <div><h3>🐍 Python-Projekt</h3><p>Platz für ein eigenes Python-Programm.</p></div>
+        <span class="tag">Python</span>
+    </div>
+
+    <div class="card project">
+        <div><h3>🎮 Browser-Game</h3><p>Platz für ein eigenes kleines Spiel.</p></div>
+        <span class="tag">JavaScript</span>
+    </div>
+</section>
+
+<footer>
+    <p>⚡ TechZone · Eine unabhängige Technik-Website</p>
+</footer>
+
 </body>
 </html>
