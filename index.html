@@ -217,5 +217,160 @@
     <p>⚡ TechZone · Eine unabhängige Technik-Website</p>
 </footer>
 
+<!-- Kaizer AI Chat-Assistent -->
+<style>
+  #kaizer-chat {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    z-index: 9999;
+    font-family: Arial, sans-serif;
+  }
+
+  #kaizer-open {
+    background: #6558f5;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 14px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    box-shadow: 0 4px 15px #0004;
+  }
+
+  #kaizer-window {
+    display: none;
+    width: min(330px, calc(100vw - 40px));
+    height: 420px;
+    max-height: 70vh;
+    background: #171725;
+    color: white;
+    border-radius: 16px;
+    overflow: hidden;
+    margin-bottom: 12px;
+    box-shadow: 0 4px 25px #0005;
+    flex-direction: column;
+  }
+
+  #kaizer-header {
+    background: #6558f5;
+    padding: 15px;
+    font-weight: bold;
+  }
+
+  #kaizer-messages {
+    padding: 12px;
+    flex: 1;
+    overflow-y: auto;
+    overflow-wrap: anywhere;
+    font-size: 14px;
+  }
+
+  .kaizer-message {
+    background: #29293d;
+    padding: 10px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    white-space: pre-wrap;
+  }
+
+  #kaizer-form {
+    display: flex;
+    gap: 6px;
+    padding: 10px;
+    background: #222235;
+  }
+
+  #kaizer-input {
+    min-width: 0;
+    flex: 1;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #777;
+    background: white;
+    color: #111;
+  }
+
+  #kaizer-form button {
+    border: none;
+    border-radius: 8px;
+    padding: 10px;
+    background: #6558f5;
+    color: white;
+    cursor: pointer;
+  }
+</style>
+
+<div id="kaizer-chat">
+  <div id="kaizer-window">
+    <div id="kaizer-header">🤖 Kaizer AI</div>
+    <div id="kaizer-messages" aria-live="polite">
+      <div class="kaizer-message">
+        Hallo! Ich bin Kaizer AI. 👋
+        Frag mich etwas!
+      </div>
+    </div>
+    <form id="kaizer-form">
+      <input id="kaizer-input" placeholder="Schreib eine Nachricht..."
+        aria-label="Deine Nachricht" autocomplete="off" required>
+      <button type="submit">Senden</button>
+    </form>
+  </div>
+  <button id="kaizer-open" type="button"
+    aria-expanded="false">💬 Kaizer AI</button>
+</div>
+
+<script>
+  const kaizerOpen = document.getElementById("kaizer-open");
+  const kaizerWindow = document.getElementById("kaizer-window");
+  const kaizerMessages = document.getElementById("kaizer-messages");
+  const kaizerForm = document.getElementById("kaizer-form");
+  const kaizerInput = document.getElementById("kaizer-input");
+
+  kaizerOpen.addEventListener("click", () => {
+    const isOpen = kaizerWindow.style.display === "flex";
+    kaizerWindow.style.display = isOpen ? "none" : "flex";
+    kaizerOpen.setAttribute("aria-expanded", String(!isOpen));
+    if (!isOpen) kaizerInput.focus();
+  });
+
+  function kaizerSay(text, isUser = false) {
+    const message = document.createElement("div");
+    message.className = "kaizer-message";
+    message.textContent = (isUser ? "Du: " : "Kaizer AI: ") + text;
+    kaizerMessages.appendChild(message);
+    kaizerMessages.scrollTop = kaizerMessages.scrollHeight;
+  }
+
+  kaizerForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const question = kaizerInput.value.trim();
+    if (!question) return;
+
+    kaizerSay(question, true);
+    kaizerInput.value = "";
+
+    const q = question.toLowerCase();
+    let answer;
+
+    if (q.includes("hallo") || q.includes("hi") ||
+        q.includes("hey")) {
+      answer = "Hallo! 👋 Was möchtest du wissen?";
+    } else if (q.includes("name") || q.includes("wer bist")) {
+      answer = "Ich bin Kaizer AI, der Assistent dieser Website!";
+    } else if (q.includes("hilfe") || q.includes("kannst du")) {
+      answer = "Ich bin eine kostenlose Demo. Frag mich nach meinem Namen oder begrüße mich!";
+    } else if (q.includes("brawl stars")) {
+      answer = "Brawl Stars! 🎮 Möchtest du über Brawler, Ranked oder Skins sprechen?";
+    } else if (q.includes("danke")) {
+      answer = "Gerne! 😊";
+    } else {
+      answer = "Interessante Frage! Ich bin aktuell eine Demo und kann noch nicht frei wie eine echte KI antworten.";
+    }
+
+    kaizerSay(answer);
+  });
+</script>
+
 </body>
 </html>
