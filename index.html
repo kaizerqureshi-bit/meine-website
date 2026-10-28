@@ -320,57 +320,108 @@
     aria-expanded="false">💬 Kaizer AI</button>
 </div>
 
-<script>
-  const kaizerOpen = document.getElementById("kaizer-open");
-  const kaizerWindow = document.getElementById("kaizer-window");
-  const kaizerMessages = document.getElementById("kaizer-messages");
-  const kaizerForm = document.getElementById("kaizer-form");
-  const kaizerInput = document.getElementById("kaizer-input");
 
-  kaizerOpen.addEventListener("click", () => {
-    const isOpen = kaizerWindow.style.display === "flex";
-    kaizerWindow.style.display = isOpen ? "none" : "flex";
-    kaizerOpen.setAttribute("aria-expanded", String(!isOpen));
-    if (!isOpen) kaizerInput.focus();
-  });
+<script type="module">
+import { CreateMLCEngine } from "https://esm.run/@mlc-ai/web-llm";
 
-  function kaizerSay(text, isUser = false) {
-    const message = document.createElement("div");
-    message.className = "kaizer-message";
-    message.textContent = (isUser ? "Du: " : "Kaizer AI: ") + text;
-    kaizerMessages.appendChild(message);
-    kaizerMessages.scrollTop = kaizerMessages.scrollHeight;
+const MODEL = "Llama-3.2-1B-Instruct-q4f16_1-MLC";
+
+const openButton = document.getElementById("kaizer-open");
+const chatWindow = document.getElementById("kaizer-window");
+const messagesBox = document.getElementById("kaizer-messages");
+const form = document.getElementById("kaizer-form");
+const input = document.getElementById("kaizer-input");
+const sendButton = form.querySelector('button[type="submit"]');
+
+let history = [
+  {
+    role: "system",
+    content: "Du bist Kaizer AI, ein freundlicher, hilfreicher Assistent. Antworte auf Deutsch, sofern der Nutzer keine andere Sprache verwendet."
   }
+];
 
-  kaizerForm.addEventListener("submit", (event) => {
-    event.preventDefault();
-    const question = kaizerInput.value.trim();
-    if (!question) return;
+function addMessage(text, isUser = false) {
+  const message = document.createElement("div");
+  message.className = "kaizer-message";
+  message.textContent = (isUser ? "Du: " : "Kaizer AI: ") + text;
+  messagesBox.appendChild(message);
+  messagesBox.scrollTop = messagesBox.scrollHeight;
+  return message;
+}
 
-    kaizerSay(question, true);
-    kaizerInput.value = "";
+openButton.addEventListener("click", () => {
+  const isOpen = chatWindow.style.display === "flex";
+  chatWindow.style.display = isOpen ? "none" : "flex";
+  openButton.setAttribute("aria-expanded", String(!isOpen));
+  if (!isOpen) input.focus();
+});
 
-    const q = question.toLowerCase();
-    let answer;
+const status = addMessage("Kaizer AI lädt das Modell. Bitte warten …");
 
-    if (q.includes("hallo") || q.includes("hi") ||
-        q.includes("hey")) {
-      answer = "Hallo! 👋 Was möchtest du wissen?";
-    } else if (q.includes("name") || q.includes("wer bist")) {
-      answer = "Ich bin Kaizer AI, der Assistent dieser Website!";
-    } else if (q.includes("hilfe") || q.includes("kannst du")) {
-      answer = "Ich bin eine kostenlose Demo. Frag mich nach meinem Namen oder begrüße mich!";
-    } else if (q.includes("brawl stars")) {
-      answer = "Brawl Stars! 🎮 Möchtest du über Brawler, Ranked oder Skins sprechen?";
-    } else if (q.includes("danke")) {
-      answer = "Gerne! 😊";
-    } else {
-      answer = "Interessante Frage! Ich bin aktuell eine Demo und kann noch nicht frei wie eine echte KI antworten.";
+const enginePromise = CreateMLCEngine(MODEL, {
+  initProgressCallback: (progress) => {
+    status.textContent = "Kaizer AI: " + progress.text;
+  }
+}).then((engine) => {
+  status.textContent = "Kaizer AI: Ich bin bereit! Stell mir eine Frage.";
+  return engine;
+}).catch((error) => {
+  console.error(error);
+  status.textContent =
+    "Kaizer AI: Das Modell konnte nicht geladen werden. Bitte lade die Seite neu und prüfe die Browser-Unterstützung.";
+  return null;
+});
+
+form.addEventListener("submit", async (event) => {
+  event.preventDefault();
+
+  const question = input.value.trim();
+  if (!question) return;
+
+  addMessage(question, true);
+  input.value = "";
+  input.disabled = true;
+  sendButton.disabled = true;
+
+  const waiting = addMessage("Ich denke nach …");
+
+  try {
+    const engine = await enginePromise;
+
+    if (!engine) {
+      waiting.textContent =
+        "Kaizer AI: Das Modell ist nicht verfügbar. Bitte lade die Seite neu.";
+      return;
     }
 
-    kaizerSay(answer);
-  });
+    history.push({ role: "user", content: question });
+
+    const response = await engine.chat.completions.create({
+      messages: history,
+      temperature: 0.7,
+      max_tokens: 300
+    });
+
+    const answer =
+      response.choices?.[0]?.message?.content ||
+      "Ich konnte gerade keine Antwort erstellen.";
+
+    history.push({ role: "assistant", content: answer });
+    waiting.textContent = "Kaizer AI: " + answer;
+
+    messagesBox.scrollTop = messagesBox.scrollHeight;
+  } catch (error) {
+    console.error(error);
+    waiting.textContent =
+      "Kaizer AI: Es gab einen Fehler. Bitte versuche es erneut.";
+  } finally {
+    input.disabled = false;
+    sendButton.disabled = false;
+    input.focus();
+  }
+});
 </script>
+
 
 </body>
 </html>
